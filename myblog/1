@@ -1,0 +1,173 @@
+
+
+server {
+    charset utf-8;
+    listen 80;
+    server_name www.myjun.top;
+
+    location /static { 
+        alias /root/sites/www.myjun.top/Blog/static;
+    }
+
+    location / { 
+        proxy_set_header Host $host;
+        proxy_pass http://unix:/tmp/www.myjun.top.socket;
+    }
+}
+ ln -s /etc/nginx/sites-available/www.myjun.top /etc/nginx/sites-enabled/www.myjun.top 
+ server {
+    charset utf-8;
+    listen 80;
+    server_name www.myjun.top;
+
+    location /static { 
+        alias /root/sites/www.myjun.top/Blog/static;
+    }
+www.myjun.top
+    location / { 
+        proxy_set_header Host $host;
+        proxy_pass http://unix:/tmp/www.myjun.top.socket;
+    }
+}
+(venv3) [root@iZwz9hbv3lrr68d8bo5dvpZ Blog]# cat  /etc/nginx/nginx.conf
+venv3) [root@iZwz9hbv3lrr68d8bo5dvpZ Blog]# vi  /etc/nginx/sites-enabled/jun.conf
+(venv3) [root@iZwz9hbv3lrr68d8bo5dvpZ Blog]# cat  /etc/nginx/nginx.conf
+jun.conf
+server {
+    charset utf-8;
+    listen 80;
+    server_name _;
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+nginx.conf:
+
+    include             /etc/nginx/mime.types;
+    include              /etc/nginx/sites-enabled/jun.conf; 
+    default_type        application/octet-stream;
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        location / {
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+server {
+    charset utf-8;
+    listen 80;
+    server_name www.myjun.top;
+    location / { 
+        proxy_set_header Host $host;
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+ server {
+    charset utf-8;
+    listen 80;
+    server_name www.myjun.top;
+
+    location /static { 
+        alias /root/sites/www.myjun.top/Blog/static;
+    }
+
+    location / { 
+        proxy_set_header Host $host;
+        proxy_pass http://unix:/tmp/www.myjun.top.socket;
+    }
+}{% extends 'base.html' %}
+
+            <main class="col-md-8">
+                <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">Django 博客开发入门教程：前言</h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">Django 博客教程</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">2017年5月11日</time></a></span>
+                            <span class="post-author"><a href="#">追梦人物</a></span>
+                            <span class="comments-link"><a href="#">4 评论</a></span>
+                            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
+                        </div>
+                    </header>
+                  
+                </article>
+                <section class="comment-area" id="comment-area">
+                    <hr>
+                    <h3>发表评论</h3>
+                    <form action="{% url 'comments:post_comment' post.pk %}" method="post" class="comment-form">
+                          {% csrf_token %}
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label for="{{ form.name.id_for_label }}">名字：</label>
+                              {{ form.name }}
+                              {{ form.name.errors }}
+                            </div>
+                            <div class="col-md-4">
+                              <label for="{{ form.email.id_for_label }}">邮箱：</label>
+                              {{ form.email }}
+                              {{ form.email.errors }}
+                            </div>
+                            <div class="col-md-4">
+                              <label for="{{ form.url.id_for_label }}">URL：</label>
+                              {{ form.url }}
+                              {{ form.url.errors }}
+                            </div>
+                            <div class="col-md-12">
+                              <label for="{{ form.text.id_for_label }}">评论：</label>
+                              {{ form.text }}
+                              {{ form.text.errors }}
+                              <button type="submit" class="comment-btn">发表</button>
+                            </div>
+                          </div>    <!-- row -->
+                        </form>
+               
+                    <div class="comment-list-panel">
+                        <h3>评论列表，共 <span>4</span> 条评论</h3>
+                                                        <ul class="comment-list list-unstyled">
+                                  {% for comment in comment_list %}
+                                  <li class="comment-item">
+                                    <span class="nickname">{{ comment.name }}</span>
+                                    <time class="submit-date">{{ comment.created_time }}</time>
+                                    <div class="text">
+                                      {{ comment.text }}
+                                    </div>
+                                  </li>
+                                  {% empty %}
+                                  暂无评论
+                                  {% endfor %}
+</ul>
+
+                    
+                    </div>
+                        <div class="entry-content clearfix">
+            {{ post.body|safe }}
+          s
+        </div>
+                </section>
+            </main>
+
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
